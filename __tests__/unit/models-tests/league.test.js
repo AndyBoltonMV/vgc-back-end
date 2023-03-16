@@ -1,23 +1,24 @@
 const mongoose = require("mongoose");
+const {
+  setUpDb,
+  sanitizeDb,
+  destroyDb,
+} = require("../../../__mocks__/db.mock");
 const { League } = require("../../../src/models");
 
+beforeAll(async () => {
+  await setUpDb();
+});
+
+afterAll(async () => {
+  await sanitizeDb();
+});
+
+afterEach(async () => {
+  await destroyDb();
+});
+
 describe("League model", () => {
-  beforeAll(async () => {
-    await mongoose.connect("mongodb://localhost:27017/myapp", {
-      useNewUrlParser: true,
-      useCreateIndex: true,
-      useUnifiedTopology: true,
-    });
-  });
-
-  afterAll(async () => {
-    await mongoose.connection.close();
-  });
-
-  afterEach(async () => {
-    await League.deleteMany();
-  });
-
   it("should save a valid league", async () => {
     const league = new League({
       leagueName: "Test League",
