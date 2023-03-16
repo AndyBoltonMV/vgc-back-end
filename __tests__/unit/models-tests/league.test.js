@@ -10,11 +10,11 @@ beforeAll(async () => {
   await setUpDb();
 });
 
-afterAll(async () => {
+afterEach(async () => {
   await sanitizeDb();
 });
 
-afterEach(async () => {
+afterAll(async () => {
   await destroyDb();
 });
 
