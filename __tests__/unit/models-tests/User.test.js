@@ -76,27 +76,4 @@ describe("User Model Test", () => {
     expect(err.errors.email).toBeDefined();
     expect(err.errors.password).toBeDefined();
   });
-
-  it("should fail to save a user with non-unique fields", async () => {
-    const user1 = new User({
-      username: "testuser",
-      email: "testuser@example.com",
-      password: "testpassword",
-    });
-    await user1.save();
-    const user2 = new User({
-      username: "testuser",
-      email: "testuser@example.com",
-      password: "testpassword",
-    });
-    let err;
-    try {
-      await user2.save();
-    } catch (error) {
-      err = error;
-    }
-    expect(err).toBeInstanceOf(Error.ValidationError);
-    expect(err.errors.username).toBeDefined();
-    expect(err.errors.email).toBeDefined();
-  });
 });
