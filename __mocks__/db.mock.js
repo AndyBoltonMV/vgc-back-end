@@ -7,7 +7,7 @@ let mongoServer;
 
 // Function to be run in beforeAll Jest set up method
 exports.setUpDb = async function () {
-  mongoServer = new MongoMemoryServer(); // Create in memory db
+  mongoServer = await MongoMemoryServer.create(); // Create in memory db
   await connect(mongoServer.getUri()); // Open Mongoose connection to mocked db
 };
 
