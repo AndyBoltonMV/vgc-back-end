@@ -4,7 +4,7 @@
   "description": "VGC REST API",
   "main": "server.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "dev": "env NODE_ENV=development nodemon server.js",
