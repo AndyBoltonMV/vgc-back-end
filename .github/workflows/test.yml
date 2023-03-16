@@ -1,0 +1,29 @@
+name: Merge on Successful Tests
+
+on:
+  pull_request:
+    types:
+      - labeled
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: refs/heads/${{ github.head_ref }}
+      - name: Install dependencies
+        run: npm ci --dev
+      - name: Run tests
+        run: npm test
+
+  merge_branches:
+    needs: test
+    runs-on: ubuntu-latest
+    if: ${{ needs.test.result == 'success' }}
+    steps:
+      - id: automerge
+        name: automerge
+        uses: "pascalgn/automerge-action@v0.15.6"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
