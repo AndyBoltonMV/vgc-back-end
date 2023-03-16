@@ -4,7 +4,7 @@ const {
   sanitizeDb,
   destroyDb,
 } = require("../../../__mocks__/db.mock");
-const Team = require("../../../src/models");
+const { Team } = require("../../../src/models");
 
 beforeAll(async () => {
   await setUpDb();
