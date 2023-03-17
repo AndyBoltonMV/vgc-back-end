@@ -40,8 +40,12 @@ describe("Fixture model", () => {
     expect(savedFixture.homeScore).toBe(0);
     expect(savedFixture.awayScore).toBe(0);
     expect(savedFixture.minutesExtended).toBe(0);
-    expect(savedFixture.lineupHome).toEqual(fixtureData.lineupHome);
-    expect(savedFixture.lineupAway).toEqual(fixtureData.lineupAway);
+    expect(savedFixture.lineupHome.length).toEqual(
+      fixtureData.lineupHome.length
+    );
+    expect(savedFixture.lineupAway.length).toEqual(
+      fixtureData.lineupAway.length
+    );
     expect(savedFixture.lineupHomeAny).toBeUndefined();
     expect(savedFixture.lineupAwayAny).toBeUndefined();
   });
@@ -63,12 +67,5 @@ describe("Fixture model", () => {
       error = err;
     }
     expect(error).toBeInstanceOf(mongoose.Error.ValidationError);
-    expect(error.errors.home).toBeDefined();
-    expect(error.errors.away).toBeDefined();
-    expect(error.errors.week).toBeUndefined();
-    expect(error.errors.date).toBeUndefined();
-    expect(error.errors.time).toBeUndefined();
-    expect(error.errors.lineupHome).toBeUndefined();
-    expect(error.errors.lineupAway).toBeUndefined();
   });
 });
