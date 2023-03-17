@@ -33,7 +33,7 @@ describe("Contract Model", () => {
     const savedContract = await contract.save();
     expect(savedContract._id).toBeDefined();
     expect(savedContract.continent).toBe(contractData.continent);
-    expect(savedContract.time.toISOString()).toBe(contractData.time);
+    expect(savedContract.time).toBe(contractData.time);
     expect(savedContract.manager).toBe(contractData.manager);
     expect(savedContract.console).toBe(contractData.console);
     expect(savedContract.length).toBe(contractData.length);
