@@ -3,4 +3,5 @@ module.exports = {
   Team: require("./team"),
   League: require("./league"),
   Contract: require("./contract"),
+  Fixture: require("./fixture"),
 };
