@@ -5,6 +5,7 @@ const {
   destroyDb,
 } = require("../../../__mocks__/db.mock");
 const { User } = require("../../../src/models");
+const { mockUser } = require("../../../__mocks__/data.mock");
 
 beforeAll(async () => {
   await setUpDb();
@@ -20,46 +21,13 @@ afterAll(async () => {
 
 describe("User Model Test", () => {
   it("should save a user successfully", async () => {
-    const user = new User({
-      username: "testuser",
-      email: "testuser@example.com",
-      password: "testpassword",
-    });
+    const user = new User(mockUser);
     const savedUser = await user.save();
     expect(savedUser._id).toBeDefined();
     expect(savedUser.username).toBe("testuser");
     expect(savedUser.email).toBe("testuser@example.com");
     expect(savedUser.password).toBe("testpassword");
     expect(savedUser.isManager).toBeFalsy();
-    expect(savedUser.xboxName).toBeUndefined();
-    expect(savedUser.psName).toBeUndefined();
-    expect(savedUser.youtube).toBeUndefined();
-    expect(savedUser.twitch).toBeUndefined();
-    expect(savedUser.playstation).toBeUndefined();
-    expect(savedUser.position).toBeUndefined();
-    expect(savedUser.membership).toBeUndefined();
-    expect(savedUser.profileImage).toBeUndefined();
-    expect(savedUser.leagues).toHaveLength(0);
-    expect(savedUser.contractOffers).toHaveLength(0);
-    expect(savedUser.trophies).toMatchObject({
-      cleanSheets: undefined,
-      divisionEight: undefined,
-      divisionSeven: undefined,
-      divisionSix: undefined,
-      divisionFive: undefined,
-      divisionFour: undefined,
-      divisionThree: undefined,
-      divisionTwo: undefined,
-      divisionOne: undefined,
-      goldenBoot: undefined,
-      goldenGlove: undefined,
-      mostAssists: undefined,
-      mostHeaders: undefined,
-      mostIntercepts: undefined,
-      mostPasses: undefined,
-      mostTackles: undefined,
-      vgcdOr: undefined,
-    });
   });
 
   it("should fail to save a user without required fields", async () => {

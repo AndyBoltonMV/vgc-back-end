@@ -5,6 +5,7 @@ const {
   destroyDb,
 } = require("../../../__mocks__/db.mock");
 const { Contract } = require("../../../src/models");
+const { mockContract } = require("../../../__mocks__/data.mock");
 
 beforeAll(async () => {
   await setUpDb();
@@ -20,39 +21,24 @@ afterAll(async () => {
 
 describe("Contract Model", () => {
   it("should create and save a contract successfully", async () => {
-    const contractData = {
-      continent: "Europe",
-      time: "2022-01-01T12:00:00.000Z",
-      manager: "John Doe",
-      console: "PlayStation 5",
-      length: 12,
-      teamName: "Team A",
-      divisionLogo: "https://example.com/division-logo.png",
-    };
-    const contract = new Contract(contractData);
+    const contract = new Contract(mockContract);
     const savedContract = await contract.save();
     expect(savedContract._id).toBeDefined();
-    expect(savedContract.continent).toBe(contractData.continent);
-    expect(savedContract.time).toBe(contractData.time);
-    expect(savedContract.manager).toBe(contractData.manager);
-    expect(savedContract.console).toBe(contractData.console);
-    expect(savedContract.length).toBe(contractData.length);
-    expect(savedContract.teamName).toBe(contractData.teamName);
+    expect(savedContract.continent).toBe(mockContract.continent);
+    expect(savedContract.time).toBe(mockContract.time);
+    expect(savedContract.manager).toBe(mockContract.manager);
+    expect(savedContract.console).toBe(mockContract.console);
+    expect(savedContract.length).toBe(mockContract.length);
+    expect(savedContract.teamName).toBe(mockContract.teamName);
     expect(savedContract.image).toBeUndefined();
-    expect(savedContract.divisionLogo).toBe(contractData.divisionLogo);
+    expect(savedContract.divisionLogo).toBe(mockContract.divisionLogo);
     expect(savedContract.managerImage).toBeUndefined();
   });
 
   it("should fail to save a contract with a missing required field", async () => {
-    const contractData = {
-      continent: "Europe",
-      time: "2022-01-01T12:00:00.000Z",
-      manager: "John Doe",
-      console: "PlayStation 5",
-      length: 12,
-      divisionLogo: "https://example.com/division-logo.png",
-    };
-    const contract = new Contract(contractData);
+    let brokenContract = JSON.parse(JSON.stringify(mockContract));
+    delete brokenContract.teamName;
+    const contract = new Contract(brokenContract);
     let error;
     try {
       await contract.save();
@@ -64,16 +50,7 @@ describe("Contract Model", () => {
   });
 
   it("should update an existing contract successfully", async () => {
-    const contractData = {
-      continent: "Europe",
-      time: "2022-01-01T12:00:00.000Z",
-      manager: "John Doe",
-      console: "PlayStation 5",
-      length: 12,
-      teamName: "Team A",
-      divisionLogo: "https://example.com/division-logo.png",
-    };
-    const contract = new Contract(contractData);
+    const contract = new Contract(mockContract);
     await contract.save();
     const updatedContractData = {
       teamName: "Team B",
