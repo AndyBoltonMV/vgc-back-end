@@ -1,7 +1,5 @@
-require("dotenv").config();
-
 module.exports = {
-  salt: process.env.SALT,
-  secret: process.env.SECRET,
+  salt: process.env.SALT || "1",
+  secret: process.env.SECRET || "placeholder",
   userSanitize: require("./util").userSanitize,
 };
