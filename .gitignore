@@ -8,6 +8,9 @@ logs/
 .vscode/
 .idea/
 
+# Environment files
+.env
+
 # Miscellaneous
 Thumbs.db
 .DS_Store

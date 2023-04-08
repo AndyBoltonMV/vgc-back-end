@@ -1,6 +1,5 @@
-exports.userSanitize = async (mongoInstanceUser) => {
-  const user = mongoInstanceUser.toObject();
-  delete user.password;
-  delete user.email;
+exports.userSanitize = (user) => {
+  user.password = "";
+  user.email = "";
   return user;
 };

@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const { User } = require("../models");
+const { User, Contract } = require("../models");
 const { secret, userSanitize } = require("../config");
 
 exports.createUser = async (req, res, next) => {
@@ -18,14 +18,15 @@ exports.createUser = async (req, res, next) => {
 exports.readUser = async (req, res, next) => {
   try {
     const result = await User.findOne(req.body.filter);
-    if (!user) {
+    if (!result) {
       throw new Error("404 No user found");
     } else {
       const user = userSanitize(result);
       res.status(200).send(user);
     }
   } catch (error) {
-    next(error);
+    //     next(error);
+    res.status(500).send({ err: error.message });
   }
 };
 
@@ -62,7 +63,69 @@ exports.genericUpdate = async (req, res, next) => {
     );
     if (!updated) {
       throw new Error("404 User not found");
-    } else if (updated.nModified === 0) {
+    } else {
+      res.sendStatus(200);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.updateLeague = async (req, res, next) => {
+  try {
+    let updateObj = {
+      $push: { leagues: req.body.leagueId },
+    };
+    if (req.body.remove) {
+      updateObj = {
+        $pull: { leagues: req.body.leagueId },
+      };
+    }
+    const updated = await User.findByIdAndUpdate(req.params.id, updateObj, {
+      new: true,
+    });
+    if (!updated) {
+      throw new Error("404 User not found");
+    } else {
+      res.sendStatus(200);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.updateContract = async (req, res, next) => {
+  try {
+    let updateObj;
+    if (req.body.remove) {
+      updateObj = {
+        $pull: { contractOffers: req.body.contractId },
+      };
+    } else {
+      updateObj = {
+        $push: { contractOffers: await Contract.create(req.body.contract) },
+      };
+    }
+    const updated = await User.findByIdAndUpdate(req.params.id, updateObj, {
+      new: true,
+    });
+    if (!updated) {
+      throw new Error("404 User not found");
+    } else {
+      res.sendStatus(200);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.deleteUser = async (req, res, next) => {
+  try {
+    const deleted = await User.findByIdAndDelete(req.user.id);
+    if (!deleted) {
+      throw new Error("404 User not found");
+    } else {
+      res.sendStatus(200);
     }
   } catch (error) {
     next(error);
