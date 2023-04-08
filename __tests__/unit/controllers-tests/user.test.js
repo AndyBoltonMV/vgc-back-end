@@ -84,9 +84,7 @@ describe("User CRUD unit tests", () => {
     req.body = {};
     req.params.id = user._id;
     req.body.updateObj = { username: "new username" };
-    console.log(req);
     await genericUpdate(req, res, next);
-    console.log(res.body);
     expect(await User.findById(user._id)).toHaveProperty(
       "username",
       "new username"
