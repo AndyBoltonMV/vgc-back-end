@@ -5,6 +5,7 @@ const {
   destroyDb,
 } = require("../../../__mocks__/db.mock");
 const { Team } = require("../../../src/models");
+const { mockTeam } = require("../../../__mocks__/data.mock");
 
 beforeAll(async () => {
   await setUpDb();
@@ -20,23 +21,7 @@ afterAll(async () => {
 
 describe("Team model", () => {
   it("should save a team with valid properties", async () => {
-    const team = new Team({
-      name: "Team A",
-      status: "Active",
-      callTimes: 3,
-      image: "https://example.com/team-a.png",
-      liveLink: "https://example.com/team-a-live",
-      continent: "Europe",
-      leagueId: new mongoose.Types.ObjectId(),
-      console: "Xbox",
-      dates: ["2022-04-01", "2022-04-02"],
-      times: ["19:00", "20:00"],
-      registered: true,
-      manager: "John Doe",
-      managerId: new mongoose.Types.ObjectId(),
-      roster: [new mongoose.Types.ObjectId(), new mongoose.Types.ObjectId()],
-      lineup: [new mongoose.Types.ObjectId(), new mongoose.Types.ObjectId()],
-    });
+    const team = new Team(mockTeam);
     const savedTeam = await team.save();
     expect(savedTeam._id).toBeDefined();
     expect(savedTeam.name).toBe("Team A");

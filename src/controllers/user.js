@@ -57,7 +57,7 @@ exports.genericUpdate = async (req, res, next) => {
   try {
     const updated = await User.findByIdAndUpdate(
       req.params.id,
-      req.body.update,
+      req.body.updateObj,
       { new: true }
     );
     if (!updated) {
@@ -101,8 +101,9 @@ exports.updateContract = async (req, res, next) => {
         $pull: { contractOffers: req.body.contractId },
       };
     } else {
+      const contract = await Contract.create(req.body.contract);
       updateObj = {
-        $push: { contractOffers: await Contract.create(req.body.contract) },
+        $push: { contractOffers: contract._id },
       };
     }
     const updated = await User.findByIdAndUpdate(req.params.id, updateObj, {
