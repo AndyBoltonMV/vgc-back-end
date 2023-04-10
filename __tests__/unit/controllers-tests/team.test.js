@@ -154,7 +154,6 @@ describe("Team Basic CRUD", () => {
     req.body.remove = true;
     req.params.id = team._id;
     req.body.userId = team.roster[0];
-    console.log(req.body, req.params);
 
     await updateRoster(req, res, next);
     const updatedTeam = await Team.findOne({ _id: team._id });
