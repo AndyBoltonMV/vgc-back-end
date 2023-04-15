@@ -1,5 +1,5 @@
 module.exports = {
-  salt: process.env.SALT || "1",
+  rounds: Number(process.env.ROUNDS) || 1,
   secret: process.env.SECRET || "placeholder",
   userSanitize: require("./util").userSanitize,
 };
