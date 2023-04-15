@@ -17,6 +17,16 @@ const {
   updateLineup,
   deleteTeam,
 } = require("./team");
+const {
+  createLeague,
+  getAllLeagues,
+  getLeagueById,
+  updateLeagueGeneric,
+  addFixtures,
+  updateFixtures,
+  updateTeams,
+  deleteLeague,
+} = require("./league");
 
 module.exports = {
   createUser,
@@ -34,4 +44,12 @@ module.exports = {
   updateRoster,
   updateLineup,
   deleteTeam,
+  createLeague,
+  getAllLeagues,
+  getLeagueById,
+  updateLeagueGeneric,
+  addFixtures,
+  updateFixtures,
+  updateTeams,
+  deleteLeague,
 };
