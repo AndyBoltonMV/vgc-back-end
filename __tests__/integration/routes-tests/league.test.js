@@ -10,13 +10,12 @@ const {
   updateFixtures,
   updateTeams,
   deleteLeague,
-} = require("../../../src/controllers");
+} = require("../../../src/controllers/league");
 
 const fakeController = (req, res, next) => {
   res.send({ message: "Success" });
 };
-
-jest.mock("../../../src/controllers", () => ({
+jest.mock("../../../src/controllers/league", () => ({
   createLeague: jest.fn(fakeController),
   getAllLeagues: jest.fn(fakeController),
   getLeagueById: jest.fn(fakeController),
@@ -30,6 +29,9 @@ jest.mock("../../../src/controllers", () => ({
 app.use(leagueRouter);
 
 describe("league routes", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
   describe("createLeague", () => {
     it("should call createLeague", async () => {
       await request(app).post("/");
