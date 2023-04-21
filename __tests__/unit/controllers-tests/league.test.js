@@ -50,8 +50,8 @@ describe("League basic CRUD", () => {
 
     await createLeague(req, res, next);
 
-    expect(res.statusCode).toBe(201);
-    expect(res.body).toHaveProperty("leagueName", "Test League");
+    expect(req.response.status).toBe(201);
+    expect(req.response.body).toHaveProperty("leagueName", "Test League");
   });
 
   it("should call next with an error if League.create throws an error", async () => {
@@ -70,8 +70,8 @@ describe("League basic CRUD", () => {
 
     await getAllLeagues(req, res, next);
 
-    expect(res.statusCode).toBe(200);
-    expect(res.body.length).toBe(2);
+    expect(req.response.status).toBe(200);
+    expect(req.response.body.length).toBe(2);
   });
 
   it("should handle errors", async () => {
@@ -90,9 +90,9 @@ describe("League basic CRUD", () => {
 
     await getLeagueById(req, res, next);
 
-    expect(res.statusCode).toBe(200);
-    expect(res.body).toHaveProperty("_id", league._id);
-    expect(next).toHaveBeenCalledTimes(0);
+    expect(req.response.status).toBe(200);
+    expect(req.response.body).toHaveProperty("_id", league._id);
+    expect(next).toHaveBeenCalledTimes(1);
   });
 
   it("should throw an error with a 404 status code if the league does not exist", async () => {
@@ -129,7 +129,7 @@ describe("League basic CRUD", () => {
       },
     };
     await updateLeagueGeneric(req, res, next);
-    expect(res.statusCode).toBe(200);
+    expect(req.response.status).toBe(200);
 
     const updatedLeague = await League.findOne({ _id: league._id });
     expect(updatedLeague.leagueName).toBe("New League Name");
@@ -144,8 +144,8 @@ describe("League basic CRUD", () => {
 
     const result = await League.findOne({ _id: league._id });
     expect(String(result.fixtures[1])).toBe(String(fixture._id));
-    expect(res.statusCode).toBe(200);
-    expect(next).not.toHaveBeenCalled();
+    expect(req.response.status).toBe(200);
+    expect(next).toHaveBeenCalled();
   });
 
   it("should remove a fixture from the league's fixture list", async () => {
@@ -160,8 +160,8 @@ describe("League basic CRUD", () => {
     await addFixtures(req, res, next);
     const result = await League.findOne({ _id: league._id });
     expect(result.fixtures.length).toBe(1);
-    expect(res.statusCode).toBe(200);
-    expect(next).not.toHaveBeenCalled();
+    expect(req.response.status).toBe(200);
+    expect(next).toHaveBeenCalled();
   });
 
   it("should return a 404 error if the league is not found", async () => {
@@ -190,8 +190,8 @@ describe("League basic CRUD", () => {
     const result = await Fixture.findOne({ _id: fixture._id });
     expect(result.homeScore).toBe(1);
     expect(result.awayScore).toBe(3);
-    expect(res.statusCode).toBe(200);
-    expect(next).not.toBeCalled();
+    expect(req.response.status).toBe(200);
+    expect(next).toBeCalled();
   });
 
   it("should update league with new team", async () => {
@@ -205,8 +205,8 @@ describe("League basic CRUD", () => {
     };
     await updateTeams(req, res, next);
 
-    expect(res.sendStatus).toHaveBeenCalledWith(200);
-    expect(next).not.toHaveBeenCalled();
+    expect(req.response.status).toBe(200);
+    expect(next).toHaveBeenCalled();
   });
 
   it("should remove team from league", async () => {
@@ -222,8 +222,8 @@ describe("League basic CRUD", () => {
 
     await updateTeams(req, res, next);
 
-    expect(res.sendStatus).toHaveBeenCalledWith(200);
-    expect(next).not.toHaveBeenCalled();
+    expect(req.response.status).toBe(200);
+    expect(next).toHaveBeenCalled();
   });
 
   it("should call next with error if league is not found", async () => {
@@ -264,8 +264,8 @@ describe("League basic CRUD", () => {
     const league = await League.create(mockLeague);
     req.params = { id: league._id };
     await deleteLeague(req, res, next);
-    expect(res.sendStatus).toHaveBeenCalledWith(204);
-    expect(next).not.toHaveBeenCalled();
+    expect(req.response.status).toBe(204);
+    expect(next).toHaveBeenCalled();
   });
 
   it("should throw a 404 error if the league does not exist", async () => {

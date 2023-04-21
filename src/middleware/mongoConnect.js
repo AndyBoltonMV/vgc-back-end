@@ -1,19 +1,21 @@
 const mongoose = require("mongoose");
-const { connection } = require("../config");
+const { connection, saveURI } = require("../config");
 
-exports.dbConnectionMiddleware = (uri) => {
-  let db = null;
-
-  return async (req, res, next) => {
-    if (!db) {
-      await connection(uri);
-    }
-
-    res.on("finish", async () => {
-      await mongoose.disconnect();
-      db = null;
-    });
-
+exports.dbConnectionMiddleware = async (req, res, next) => {
+  try {
+    const uri = await saveURI();
+    await connection(uri);
     next();
-  };
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.dbDisconnect = async (req, res, next) => {
+  try {
+    await mongoose.disconnect();
+    next();
+  } catch (error) {
+    next(error);
+  }
 };

@@ -1,6 +1,6 @@
 const { hashPassword, checkPassword, checkToken } = require("./auth");
 const { errorHandler } = require("./error");
-const { dbConnectionMiddleware } = require("./mongoConnect");
+const { dbConnectionMiddleware, dbDisconnect } = require("./mongoConnect");
 
 module.exports = {
   hashPassword,
@@ -8,4 +8,5 @@ module.exports = {
   checkToken,
   errorHandler,
   dbConnectionMiddleware,
+  dbDisconnect,
 };

@@ -8,8 +8,14 @@ exports.createUser = async (req, res, next) => {
     if (!user) {
       throw new Error("500 Unable to create new User");
     } else {
-      res.status(200).send({ user: user.username });
+      req.response = {
+        status: 200,
+        body: {
+          user: user.username,
+        },
+      };
     }
+    next();
   } catch (error) {
     next(error);
   }
@@ -22,8 +28,14 @@ exports.readUser = async (req, res, next) => {
       throw new Error("404 No user found");
     } else {
       const user = userSanitize(result);
-      res.status(200).send(user);
+      req.response = {
+        status: 200,
+        body: {
+          user,
+        },
+      };
     }
+    next();
   } catch (error) {
     next(error);
   }
@@ -36,8 +48,14 @@ exports.readUsers = async (req, res, next) => {
       throw new Error("404 No users found");
     } else {
       const users = results.map(userSanitize);
-      res.status(200).send({ users });
+      req.response = {
+        status: 200,
+        body: {
+          users,
+        },
+      };
     }
+    next();
   } catch (error) {
     next(error);
   }
@@ -47,7 +65,14 @@ exports.login = async (req, res, next) => {
   try {
     const user = userSanitize(req.user);
     const token = jwt.sign({ id: user._id }, secret);
-    res.status(200).send({ user, token });
+    req.response = {
+      status: 200,
+      body: {
+        user,
+        token,
+      },
+    };
+    next();
   } catch (error) {
     next(error);
   }
@@ -63,7 +88,11 @@ exports.genericUpdate = async (req, res, next) => {
     if (!updated) {
       throw new Error("404 User not found");
     } else {
-      res.sendStatus(200);
+      req.response = {
+        status: 200,
+        body: {},
+      };
+      next();
     }
   } catch (error) {
     next(error);
@@ -86,6 +115,10 @@ exports.updateLeague = async (req, res, next) => {
     if (!updated) {
       throw new Error("404 User not found");
     } else {
+      req.response = {
+        status: 200,
+        body: {},
+      };
       res.sendStatus(200);
     }
   } catch (error) {
@@ -112,6 +145,10 @@ exports.updateContract = async (req, res, next) => {
     if (!updated) {
       throw new Error("404 User not found");
     } else {
+      req.response = {
+        status: 200,
+        body: {},
+      };
       res.sendStatus(200);
     }
   } catch (error) {
@@ -125,6 +162,10 @@ exports.deleteUser = async (req, res, next) => {
     if (!deleted) {
       throw new Error("404 User not found");
     } else {
+      req.response = {
+        status: 200,
+        body: {},
+      };
       res.sendStatus(200);
     }
   } catch (error) {

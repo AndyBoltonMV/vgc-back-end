@@ -3,7 +3,11 @@ const { Team } = require("../models");
 exports.createTeam = async (req, res, next) => {
   try {
     const team = await Team.create(req.body);
-    res.status(201).send(team);
+    req.response = {
+      status: 200,
+      body: team,
+    };
+    next();
   } catch (error) {
     next(error);
   }
@@ -12,7 +16,11 @@ exports.createTeam = async (req, res, next) => {
 exports.getTeams = async (req, res, next) => {
   try {
     const teams = await Team.find(req.body.filterObj);
-    res.status(200).send(teams);
+    req.response = {
+      status: 200,
+      body: teams,
+    };
+    next();
   } catch (error) {
     next(error);
   }
@@ -24,7 +32,11 @@ exports.getTeamById = async (req, res, next) => {
     if (!team) {
       throw new Error("404 Team not found");
     }
-    res.status(200).send(team);
+    req.response = {
+      status: 200,
+      body: team,
+    };
+    next();
   } catch (error) {
     next(error);
   }
@@ -42,7 +54,11 @@ exports.updateTeam = async (req, res, next) => {
     if (!team) {
       throw new Error("404 Team not found");
     }
-    res.sendStatus(200);
+    req.response = {
+      status: 200,
+      body: {},
+    };
+    next();
   } catch (error) {
     next(error);
   }
@@ -62,7 +78,11 @@ exports.updateRoster = async (req, res, next) => {
     if (!updated) {
       throw new Error("404 Team not found");
     } else {
-      res.status(200).send(updated);
+      req.response = {
+        status: 200,
+        body: updated,
+      };
+      next();
     }
   } catch (error) {
     next(error);
@@ -83,7 +103,11 @@ exports.updateLineup = async (req, res, next) => {
     if (!updated) {
       throw new Error("404 Team not found");
     } else {
-      res.sendStatus(200);
+      req.response = {
+        status: 200,
+        body: {},
+      };
+      next();
     }
   } catch (error) {
     next(error);
@@ -96,7 +120,11 @@ exports.deleteTeam = async (req, res, next) => {
     if (!team) {
       throw new Error("404 Team not found");
     }
-    res.status(204).send(team);
+    req.response = {
+      status: 204,
+      body: team,
+    };
+    next();
   } catch (error) {
     next(error);
   }

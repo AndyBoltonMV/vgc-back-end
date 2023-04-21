@@ -4,6 +4,7 @@ const app = require("../../src/app");
 jest.mock("../../src/middleware", () => ({
   errorHandler: jest.fn(),
   dbConnectionMiddleware: jest.fn((mongoUri) => (req, res, next) => next()),
+  dbDisconnect: jest.fn(),
 }));
 
 jest.mock("../../src/routes", () => ({

@@ -3,7 +3,11 @@ const { League, Fixture, Team } = require("../models");
 exports.createLeague = async (req, res, next) => {
   try {
     const league = await League.create(req.body);
-    res.status(201).send(league);
+    req.response = {
+      status: 201,
+      body: league,
+    };
+    next();
   } catch (error) {
     next(error);
   }
@@ -12,7 +16,11 @@ exports.createLeague = async (req, res, next) => {
 exports.getAllLeagues = async (req, res, next) => {
   try {
     const leagues = await League.find();
-    res.status(200).send(leagues);
+    req.response = {
+      status: 200,
+      body: leagues,
+    };
+    next();
   } catch (error) {
     next(error);
   }
@@ -24,7 +32,11 @@ exports.getLeagueById = async (req, res, next) => {
     if (!league) {
       throw new Error("404 League not found");
     }
-    res.status(200).send(league);
+    req.response = {
+      status: 200,
+      body: league,
+    };
+    next();
   } catch (error) {
     next(error);
   }
@@ -42,7 +54,11 @@ exports.updateLeagueGeneric = async (req, res, next) => {
     if (!league) {
       throw new Error("404 League not found");
     }
-    res.sendStatus(200);
+    req.response = {
+      status: 200,
+      body: {},
+    };
+    next();
   } catch (error) {
     next(error);
   }
@@ -67,7 +83,11 @@ exports.addFixtures = async (req, res, next) => {
     if (!updated) {
       throw new Error("404 League not found");
     } else {
-      res.sendStatus(200);
+      req.response = {
+        status: 200,
+        body: {},
+      };
+      next();
     }
   } catch (error) {
     next(error);
@@ -86,7 +106,11 @@ exports.updateFixtures = async (req, res, next) => {
     if (!updated) {
       throw new Error("404 fixture not found");
     } else {
-      res.sendStatus(200);
+      req.response = {
+        status: 200,
+        body: {},
+      };
+      next();
     }
   } catch (error) {
     next(error);
@@ -115,7 +139,11 @@ exports.updateTeams = async (req, res, next) => {
     if (!updated) {
       throw new Error("404 team or league not found");
     } else {
-      res.sendStatus(200);
+      req.response = {
+        status: 200,
+        body: {},
+      };
+      next();
     }
   } catch (error) {
     next(error);
@@ -128,7 +156,11 @@ exports.deleteLeague = async (req, res, next) => {
     if (!league) {
       throw new Error("404 League not found");
     }
-    res.sendStatus(204);
+    req.response = {
+      status: 204,
+      body: {},
+    };
+    next();
   } catch (error) {
     next(error);
   }
