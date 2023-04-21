@@ -1,18 +1,17 @@
 const mongoose = require("mongoose");
+const { connection } = require("../config");
 
 exports.dbConnectionMiddleware = (uri) => {
-  let connection = null;
+  let db = null;
 
-  return (req, res, next) => {
-    if (!connection) {
-      connection = mongoose.createConnection(uri);
+  return async (req, res, next) => {
+    if (!db) {
+      await connection(uri);
     }
 
-    req.db = connection;
-
-    res.on("finish", () => {
-      connection.close();
-      connection = null;
+    res.on("finish", async () => {
+      await mongoose.disconnect();
+      db = null;
     });
 
     next();
