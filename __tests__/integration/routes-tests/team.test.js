@@ -25,6 +25,9 @@ jest.mock("../../../src/controllers/team", () => ({
 }));
 
 app.use(teamRouter);
+afterEach(() => {
+  jest.clearAllMocks();
+});
 
 describe("team routes", () => {
   describe("createTeam", () => {

@@ -54,8 +54,8 @@ describe("User CRUD unit tests", () => {
   });
 
   it("should find one user", async () => {
-    await User.create(mockUser);
-    req.body.filter = { username: mockUser.username };
+    const testUser = await User.create(mockUser);
+    req.params = { id: testUser._id };
     await readUser(req, res, next);
     const user = await User.findOne({ username: mockUser.username });
     expect(res.body.position).toBe(user.position);
@@ -68,7 +68,7 @@ describe("User CRUD unit tests", () => {
       email: "tester@email.com",
       password: "test123",
     });
-    req.body.filter = {};
+    req.query = {};
     await readUsers(req, res, next);
     expect(res.body.users.length).toBe(2);
   });
