@@ -27,6 +27,9 @@ jest.mock("../../../src/controllers/league", () => ({
 }));
 
 app.use(leagueRouter);
+afterEach(() => {
+  jest.clearAllMocks();
+});
 
 describe("league routes", () => {
   beforeEach(() => {

@@ -26,7 +26,7 @@ const fakeMiddleware = (req, res, next) => {
   next();
 };
 
-jest.mock("../../../src/controllers/team", () => ({
+jest.mock("../../../src/controllers/user", () => ({
   createUser: jest.fn(fakeController),
   readUser: jest.fn(fakeController),
   readUsers: jest.fn(fakeController),
@@ -35,12 +35,17 @@ jest.mock("../../../src/controllers/team", () => ({
   updateLeague: jest.fn(fakeController),
   updateContract: jest.fn(fakeController),
   deleteUser: jest.fn(fakeController),
+}));
+jest.mock("../../../src/middleware/auth", () => ({
   hashPassword: jest.fn(fakeMiddleware),
   checkPassword: jest.fn(fakeMiddleware),
   checkToken: jest.fn(fakeMiddleware),
 }));
 
 app.use(userRouter);
+afterEach(() => {
+  jest.clearAllMocks();
+});
 
 describe("user routes", () => {
   describe("createUser", () => {
@@ -71,9 +76,9 @@ describe("user routes", () => {
   });
   describe("login get", () => {
     it("should call checkToken and login", async () => {
-      await request(app).get("/login");
-      expect(checkToken).toHaveBeenCalled();
+      await request(app).get("/login/token");
       expect(login).toHaveBeenCalled();
+      expect(checkToken).toHaveBeenCalled();
     });
   });
   describe("genericUpdate", () => {
@@ -96,8 +101,9 @@ describe("user routes", () => {
     });
   });
   describe("deleteUser", () => {
-    it("should call deleteUser", async () => {
+    it("should call checkToken and deleteUser", async () => {
       await request(app).delete("/1");
+      expect(checkToken).toHaveBeenCalled();
       expect(deleteUser).toHaveBeenCalled();
     });
   });
