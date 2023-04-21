@@ -17,7 +17,7 @@ exports.createUser = async (req, res, next) => {
 
 exports.readUser = async (req, res, next) => {
   try {
-    const result = await User.findOne(req.body.filter);
+    const result = await User.findById(req.params.id);
     if (!result) {
       throw new Error("404 No user found");
     } else {
@@ -31,7 +31,7 @@ exports.readUser = async (req, res, next) => {
 
 exports.readUsers = async (req, res, next) => {
   try {
-    const results = await User.find(req.body.filter);
+    const results = await User.find(req.query);
     if (!results) {
       throw new Error("404 No users found");
     } else {
